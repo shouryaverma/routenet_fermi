@@ -30,7 +30,7 @@ for i in range(5):
         VALIDATION_PATH = '/home/verma198/Public/RouteNet-Fermi/data/all_mixed/fat16/test'
         TEST_PATH = '/home/verma198/Public/RouteNet-Fermi/data/all_mixed/fat16/test'
 
-        ckpt_dir = './ckpt_dirs/ckpt_dir_{}_{}'.format(i, num_samples)
+        ckpt_dir = './ckpt_dir/ckpt_dir_{}_{}'.format(i, num_samples)
 
         optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
 

@@ -6,14 +6,16 @@ import numpy as np
 import tensorflow as tf
 from data_generator import input_fn
 
-import sys
+# import sys
 
-sys.path.append('../')
+# sys.path.append('../')
 from delay_model import RouteNet_Fermi
+# from delay_model_LSTM import RouteNet_Fermi
+# from delay_model_RNN import RouteNet_Fermi
 
 for N in [16, 64, 128]:
     print(f"Predicting for N = {N}...")
-    TEST_PATH = f'/data/TON23/fat{N}/test'
+    TEST_PATH = f'/home/verma198/Public/RouteNet-Fermi/data/fat{N}/test'
 
     optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
 
@@ -28,7 +30,7 @@ for N in [16, 64, 128]:
     best = None
     best_mre = float('inf')
 
-    ckpt_dir = f'./ckpt_dir_{N}'
+    ckpt_dir = f'./ckpt_dir_{N}_GRU'
 
     for f in os.listdir(ckpt_dir):
         if os.path.isfile(os.path.join(ckpt_dir, f)):

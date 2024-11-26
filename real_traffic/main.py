@@ -6,10 +6,12 @@ import sys
 
 #sys.path.append('../../')
 from delay_model import RouteNet_Fermi
+# from delay_model_LSTM import RouteNet_Fermi
+# from delay_model_RNN import RouteNet_Fermi
 
-TRAIN_PATH = f'/data/TON23/real_traces/geant'
-VALIDATION_PATH = f'/data/TON23/real_traces'
-TEST_PATH = f'/data/TON23/real_traces'
+TRAIN_PATH = f'/home/verma198/Public/RouteNet-Fermi/data/real_traces/train/geant'
+VALIDATION_PATH = f'/home/verma198/Public/RouteNet-Fermi/data/real_traces/test/geant'
+TEST_PATH = f'/home/verma198/Public/RouteNet-Fermi/data/real_traces/test/geant'
 
 ds_train = input_fn(TRAIN_PATH, shuffle=True)
 ds_train = ds_train.prefetch(tf.data.experimental.AUTOTUNE)
@@ -21,6 +23,7 @@ ds_validation = ds_validation.prefetch(tf.data.experimental.AUTOTUNE)
 optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
 
 model = RouteNet_Fermi()
+ckpt_dir = './ckpt_dir_GRU'
 
 loss_object = tf.keras.losses.MeanAbsolutePercentageError()
 
@@ -28,8 +31,8 @@ model.compile(loss=loss_object,
               optimizer=optimizer,
               run_eagerly=False)
 
-ckpt_dir = './ckpt_dir'
-latest = tf.train.latest_checkpoint(ckpt_dir)
+# latest = tf.train.latest_checkpoint(ckpt_dir)
+latest = None
 
 if latest is not None:
     print("Found a pretrained model, restoring...")
