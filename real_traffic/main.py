@@ -5,9 +5,9 @@ from data_generator import input_fn
 import sys
 
 #sys.path.append('../../')
-from delay_model import RouteNet_Fermi
+# from delay_model import RouteNet_Fermi
 # from delay_model_LSTM import RouteNet_Fermi
-# from delay_model_RNN import RouteNet_Fermi
+from delay_model_RNN import RouteNet_Fermi
 
 TRAIN_PATH = f'/home/verma198/Public/RouteNet-Fermi/data/real_traces/train/geant'
 VALIDATION_PATH = f'/home/verma198/Public/RouteNet-Fermi/data/real_traces/test/geant'
@@ -23,7 +23,7 @@ ds_validation = ds_validation.prefetch(tf.data.experimental.AUTOTUNE)
 optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
 
 model = RouteNet_Fermi()
-ckpt_dir = './ckpt_dir_GRU'
+ckpt_dir = './ckpt_dir_RNN'
 
 loss_object = tf.keras.losses.MeanAbsolutePercentageError()
 
