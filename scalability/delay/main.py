@@ -2,14 +2,16 @@ import os
 import tensorflow as tf
 from data_generator import input_fn
 
-import sys
+# import sys
 
-sys.path.append('../../../')
+# sys.path.append('../../../')
 from delay_model import RouteNet_Fermi
+# from delay_model_LSTM import RouteNet_Fermi
+# from delay_model_RNN import RouteNet_Fermi
 
-TRAIN_PATH = '../../data/scalability/train'
-VALIDATION_PATH = '../../data/scalability/validation'
-TEST_PATH = '../../data/scalability/test'
+TRAIN_PATH = '/home/verma198/Public/RouteNet-Fermi/data/scalability/train'
+VALIDATION_PATH = '/home/verma198/Public/RouteNet-Fermi/data/scalability/test'
+TEST_PATH = '/home/verma198/Public/RouteNet-Fermi/data/scalability/test'
 
 ds_train = input_fn(TRAIN_PATH, shuffle=True)
 ds_train = ds_train.prefetch(tf.data.experimental.AUTOTUNE)
@@ -29,7 +31,8 @@ model.compile(loss=loss_object,
               run_eagerly=False)
 
 ckpt_dir = 'ckpt_dir'
-latest = tf.train.latest_checkpoint(ckpt_dir)
+# latest = tf.train.latest_checkpoint(ckpt_dir)
+latest = None
 
 if latest is not None:
     print("Found a pretrained model, restoring...")
