@@ -5,9 +5,9 @@ from data_generator import input_fn
 # import sys
 
 # sys.path.append('../../../')
-from delay_model import RouteNet_Fermi
+# from delay_model import RouteNet_Fermi
 # from delay_model_LSTM import RouteNet_Fermi
-# from delay_model_RNN import RouteNet_Fermi
+from delay_model_RNN import RouteNet_Fermi
 
 TRAIN_PATH = '/home/verma198/Public/RouteNet-Fermi/data/scalability/train'
 VALIDATION_PATH = '/home/verma198/Public/RouteNet-Fermi/data/scalability/test'
@@ -30,7 +30,7 @@ model.compile(loss=loss_object,
               optimizer=optimizer,
               run_eagerly=False)
 
-ckpt_dir = 'ckpt_dir'
+ckpt_dir = 'ckpt_dir_RNN'
 # latest = tf.train.latest_checkpoint(ckpt_dir)
 latest = None
 
