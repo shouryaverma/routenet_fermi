@@ -4,13 +4,15 @@ from data_generator import input_fn
 
 import sys
 
-sys.path.append('../../../')
-from jitter_model import RouteNet_Fermi
+# sys.path.append('../../../')
+# from jitter_model import RouteNet_Fermi
+# from jitter_model_LSTM import RouteNet_Fermi
+from jitter_model_RNN import RouteNet_Fermi
 
 
-TRAIN_PATH = '../../data/scalability/train'
-VALIDATION_PATH = '../../data/scalability/validation'
-TEST_PATH = '../../data/scalability/test'
+TRAIN_PATH = '/home/verma198/Public/RouteNet-Fermi/data/scalability/train'
+VALIDATION_PATH = '/home/verma198/Public/RouteNet-Fermi/data/scalability/test'
+TEST_PATH = '/home/verma198/Public/RouteNet-Fermi/data/scalability/test'
 
 ds_train = input_fn(TRAIN_PATH, shuffle=True)
 ds_train = ds_train.prefetch(tf.data.experimental.AUTOTUNE)
@@ -29,8 +31,9 @@ model.compile(loss=loss_object,
               optimizer=optimizer,
               run_eagerly=False)
 
-ckpt_dir = 'ckpt_dir'
-latest = tf.train.latest_checkpoint(ckpt_dir)
+ckpt_dir = './ckpt_dir_RNN'
+# latest = tf.train.latest_checkpoint(ckpt_dir)
+latest = None
 
 if latest is not None:
     print("Found a pretrained model, restoring...")
@@ -50,7 +53,7 @@ cp_callback = tf.keras.callbacks.ModelCheckpoint(
     save_freq='epoch')
 
 model.fit(ds_train,
-          epochs=150,
+          epochs=25,
           steps_per_epoch=2000,
           validation_data=ds_validation,
           callbacks=[cp_callback],
