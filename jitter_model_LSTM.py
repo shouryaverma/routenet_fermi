@@ -1,9 +1,9 @@
 import tensorflow as tf
 
 
-class RouteNet_Fermi_LSTM(tf.keras.Model):
+class RouteNet_Fermi(tf.keras.Model):
     def __init__(self):
-        super(RouteNet_Fermi_LSTM, self).__init__()
+        super(RouteNet_Fermi, self).__init__()
 
         # Configuration dictionary. It contains the needed Hyperparameters for the model.
         # All the Hyperparameters can be found in the config.ini file

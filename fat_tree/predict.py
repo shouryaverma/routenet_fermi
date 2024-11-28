@@ -9,9 +9,9 @@ from data_generator import input_fn
 # import sys
 
 # sys.path.append('../')
-from delay_model import RouteNet_Fermi
+# from delay_model import RouteNet_Fermi
 # from delay_model_LSTM import RouteNet_Fermi
-# from delay_model_RNN import RouteNet_Fermi
+from delay_model_RNN import RouteNet_Fermi
 
 for N in [16, 64, 128]:
     print(f"Predicting for N = {N}...")
@@ -30,7 +30,7 @@ for N in [16, 64, 128]:
     best = None
     best_mre = float('inf')
 
-    ckpt_dir = f'./ckpt_dir_{N}_GRU'
+    ckpt_dir = f'./ckpt_dir_{N}_RNN'
 
     for f in os.listdir(ckpt_dir):
         if os.path.isfile(os.path.join(ckpt_dir, f)):
@@ -52,4 +52,4 @@ for N in [16, 64, 128]:
 
     predictions = model.predict(ds_test, verbose=1)
 
-    np.save(f'predictions_delay_{N}.npy', np.squeeze(predictions))
+    np.save(f'predictions_delay_{N}_RNN.npy', np.squeeze(predictions))
