@@ -1,6 +1,8 @@
-# RouteNet-Fermi
+# RouteNet-Fermi Reimplementation Project
 
-This is the official implementation of RouteNet-Fermi, a pioneering GNN architecture designed to model computer 
+THIS IS NOT THE ORIGINAL REPOSITORY OF THE PAPER
+
+This is the official re-implementation of RouteNet-Fermi, a pioneering GNN architecture designed to model computer 
 networks. RouteNet-Fermi supports complex traffic models, multi-queue scheduling policies, routing policies and 
 can provide accurate estimates in networks not seen in the training phase.
 
