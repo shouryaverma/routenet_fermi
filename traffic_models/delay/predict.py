@@ -25,7 +25,7 @@ for tm in ['constant_bitrate', 'onoff', 'autocorrelated', 'modulated', 'all_mult
     best = None
     best_mre = float('inf')
 
-    ckpt_dir = f'./ckpt_dir_{tm}'
+    ckpt_dir = f'./ckpt_dir_{tm}_GNN'
 
     for f in os.listdir(ckpt_dir):
         if os.path.isfile(os.path.join(ckpt_dir, f)):
@@ -47,4 +47,4 @@ for tm in ['constant_bitrate', 'onoff', 'autocorrelated', 'modulated', 'all_mult
 
     predictions = model.predict(ds_test, verbose=1)
 
-    np.save(f'predictions_delay_{tm}.npy', np.squeeze(predictions))
+    np.save(f'predictions_delay_{tm}_GNN.npy', np.squeeze(predictions))
