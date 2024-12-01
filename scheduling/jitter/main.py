@@ -2,16 +2,9 @@ import os
 import tensorflow as tf
 from data_generator import input_fn
 
-import sys
-
-sys.path.append('../../')
 from jitter_model import RouteNet_Fermi
-
-
-def transformation(x, y):
-    return x, tf.math.log(y)
-
-import tensorflow_probability as tfp
+# from jitter_model_LSTM import RouteNet_Fermi
+# from jitter_model_RNN import RouteNet_Fermi
 
 def denorm_MAPE(y_true, y_pred):
     denorm_y_true = tf.math.exp(y_true)
@@ -19,42 +12,42 @@ def denorm_MAPE(y_true, y_pred):
     mape = tf.abs((denorm_y_pred - denorm_y_true) / denorm_y_true) * 100
     return mape
 
-
-TRAIN_PATH = '../../data/scheduling/train'
-VALIDATION_PATH = '../../data/scheduling/test'
-TEST_PATH = '../../data/scheduling/test'
+TRAIN_PATH = '/home/verma198/Public/RouteNet-Fermi/data/scheduling/train'
+VALIDATION_PATH = '/home/verma198/Public/RouteNet-Fermi/data/scheduling/test'
+TEST_PATH = '/home/verma198/Public/RouteNet-Fermi/data/scheduling/test'
 
 ds_train = input_fn(TRAIN_PATH, shuffle=True)
-ds_train = ds_train.map(lambda x, y: transformation(x, y))
+# ds_train = ds_train.map(lambda x, y: transformation(x, y))
 ds_train = ds_train.prefetch(tf.data.experimental.AUTOTUNE)
 ds_train = ds_train.repeat()
 
 ds_validation = input_fn(VALIDATION_PATH, shuffle=False)
-ds_validation = ds_validation.map(lambda x, y: transformation(x, y))
+# ds_validation = ds_validation.map(lambda x, y: transformation(x, y))
 ds_validation = ds_validation.prefetch(tf.data.experimental.AUTOTUNE)
 
 optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
 
 model = RouteNet_Fermi()
 
-loss_object = tf.keras.losses.MeanSquaredError()
+# loss_object = tf.keras.losses.MeanSquaredError()
+loss_object = tf.keras.losses.MeanAbsolutePercentageError()
 
 model.compile(loss=loss_object,
               optimizer=optimizer,
-              run_eagerly=False,
-              metrics=[denorm_MAPE])
+              run_eagerly=False,)
+            #   metrics=[denorm_MAPE])
 
-ckpt_dir = './ckpt_dir'
-latest = tf.train.latest_checkpoint(ckpt_dir)
+ckpt_dir = './ckpt_dir_GRU'
+# latest = tf.train.latest_checkpoint(ckpt_dir)
+latest = None
 
 if latest is not None:
     print("Found a pretrained model, restoring...")
     model.load_weights(latest)
 else:
     print("Starting training from scratch...")
-
-ckpt_dir = './ckpt_dir_mape'
-filepath = os.path.join(ckpt_dir, "{epoch:02d}-{val_denorm_MAPE:.5f}")
+    
+filepath = os.path.join(ckpt_dir, "{epoch:02d}-{val_loss:.2f}")
 
 cp_callback = tf.keras.callbacks.ModelCheckpoint(
     filepath=filepath,
@@ -66,7 +59,7 @@ cp_callback = tf.keras.callbacks.ModelCheckpoint(
     save_freq='epoch')
 
 model.fit(ds_train,
-          epochs=150,
+          epochs=25,
           steps_per_epoch=2000,
           validation_data=ds_validation,
           validation_steps=200,
@@ -75,5 +68,5 @@ model.fit(ds_train,
 
 ds_test = input_fn(TEST_PATH, shuffle=False)
 ds_test = ds_test.prefetch(tf.data.experimental.AUTOTUNE)
-ds_test = ds_test.map(lambda x, y: transformation(x, y))
+# ds_test = ds_test.map(lambda x, y: transformation(x, y))
 model.evaluate(ds_test)

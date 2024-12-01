@@ -2,9 +2,9 @@ import os
 import tensorflow as tf
 from data_generator import input_fn
 
-import sys
-sys.path.append('../../')
-from loss_model import RouteNet_Fermi
+# from loss_model import RouteNet_Fermi
+from loss_model_LSTM import RouteNet_Fermi
+# from loss_model_RNN import RouteNet_Fermi
 
 def R_squared(y, y_pred):
     residual = tf.reduce_sum(tf.square(tf.subtract(y, y_pred)))
@@ -12,9 +12,9 @@ def R_squared(y, y_pred):
     r2 = tf.subtract(1.0, tf.math.divide(residual, total))
     return r2
 
-TRAIN_PATH = '../../data/scheduling/train'
-VALIDATION_PATH = '../../data/scheduling/test'
-TEST_PATH = '../../data/scheduling/test'
+TRAIN_PATH = '/home/verma198/Public/RouteNet-Fermi/data/scheduling/train'
+VALIDATION_PATH = '/home/verma198/Public/RouteNet-Fermi/data/scheduling/test'
+TEST_PATH = '/home/verma198/Public/RouteNet-Fermi/data/scheduling/test'
 
 ds_train = input_fn(TRAIN_PATH, shuffle=True)
 ds_train = ds_train.prefetch(tf.data.experimental.AUTOTUNE)
@@ -34,7 +34,7 @@ model.compile(loss=loss_object,
               run_eagerly=False,
               metrics=[R_squared, "MAE"])
 
-ckpt_dir = './ckpt_dir'
+ckpt_dir = './ckpt_dir_LSTM'
 latest = tf.train.latest_checkpoint(ckpt_dir)
 
 if latest is not None:
@@ -55,7 +55,7 @@ cp_callback = tf.keras.callbacks.ModelCheckpoint(
     save_freq='epoch')
 
 model.fit(ds_train,
-          epochs=50,
+          epochs=25,
           steps_per_epoch=2000,
           validation_data=ds_validation,
           validation_steps=200,

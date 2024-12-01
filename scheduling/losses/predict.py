@@ -4,12 +4,11 @@ import numpy as np
 import tensorflow as tf
 from data_generator import input_fn
 
-import sys
+# from loss_model import RouteNet_Fermi
+# from loss_model_LSTM import RouteNet_Fermi
+from loss_model_RNN import RouteNet_Fermi
 
-sys.path.append('../../')
-from loss_model import RouteNet_Fermi
-
-TEST_PATH = f'../../data/scheduling/test'
+TEST_PATH = f'/home/verma198/Public/RouteNet-Fermi/data/scheduling/test'
 
 optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
 
@@ -24,7 +23,7 @@ model.compile(loss=loss_object,
 best = None
 best_mre = float('inf')
 
-ckpt_dir = f'./ckpt_dir'
+ckpt_dir = f'./ckpt_dir_RNN'
 
 for f in os.listdir(ckpt_dir):
     if os.path.isfile(os.path.join(ckpt_dir, f)):
@@ -46,4 +45,4 @@ ds_test = ds_test.prefetch(tf.data.experimental.AUTOTUNE)
 
 predictions = model.predict(ds_test, verbose=1)
 
-np.save(f'predictions_loss_scheduling.npy', np.squeeze(predictions))
+np.save(f'predictions_loss_scheduling_RNN.npy', np.squeeze(predictions))
