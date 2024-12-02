@@ -6,9 +6,9 @@ from data_generator import input_fn
 
 import sys
 
-# from jitter_model import RouteNet_Fermi
+from jitter_model import RouteNet_Fermi
 # from jitter_model_LSTM import RouteNet_Fermi
-from jitter_model_RNN import RouteNet_Fermi
+# from jitter_model_RNN import RouteNet_Fermi
 
 TEST_PATH = f'/home/verma198/Public/RouteNet-Fermi/data/scalability/test'
 
@@ -25,7 +25,7 @@ model.compile(loss=loss_object,
 best = None
 best_mre = float('inf')
 
-ckpt_dir = f'ckpt_dir_RNN'
+ckpt_dir = f'ckpt_dir'
 
 for f in os.listdir(ckpt_dir):
     if os.path.isfile(os.path.join(ckpt_dir, f)):
@@ -47,4 +47,4 @@ ds_test = ds_test.prefetch(tf.data.experimental.AUTOTUNE)
 
 predictions = model.predict(ds_test, verbose=1)
 
-np.save(f'predictions_jitter_scalability_RNN.npy', np.squeeze(predictions))
+np.save(f'predictions_jitter_scalability.npy', np.squeeze(predictions))
