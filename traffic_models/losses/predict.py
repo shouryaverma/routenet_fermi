@@ -4,11 +4,9 @@ import numpy as np
 import tensorflow as tf
 from data_generator import input_fn
 
-import sys
-
-sys.path.append('../../')
-from loss_model import RouteNet_Fermi
-
+# from loss_model import RouteNet_Fermi
+from loss_model_LSTM import RouteNet_Fermi
+# from loss_model_RNN import RouteNet_Fermi
 
 def R_squared(y, y_pred):
     residual = tf.reduce_sum(tf.square(tf.subtract(y, y_pred)))
@@ -16,9 +14,9 @@ def R_squared(y, y_pred):
     r2 = tf.subtract(1.0, tf.math.divide(residual, total))
     return r2
 
-
-for tm in ['onoff', 'autocorrelated', 'modulated', 'all_multiplexed']:
-    TEST_PATH = f'../../data/traffic_models/{tm}/test'
+# for tm in ['onoff', 'autocorrelated', 'modulated', 'all_multiplexed']:
+for tm in ['constant_bitrate']:
+    TEST_PATH = f'/home/verma198/Public/RouteNet-Fermi/data/traffic_models/{tm}/test'
 
     optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
 
@@ -34,7 +32,7 @@ for tm in ['onoff', 'autocorrelated', 'modulated', 'all_multiplexed']:
     best = None
     best_mre = float('inf')
 
-    ckpt_dir = f'./ckpt_dir_{tm}'
+    ckpt_dir = f'./ckpt_dir_{tm}_LSTM'
 
     for f in os.listdir(ckpt_dir):
         if os.path.isfile(os.path.join(ckpt_dir, f)):
@@ -56,4 +54,4 @@ for tm in ['onoff', 'autocorrelated', 'modulated', 'all_multiplexed']:
 
     predictions = model.predict(ds_test, verbose=1)
 
-    np.save(f'predictions_loss_{tm}.npy', np.squeeze(predictions))
+    np.save(f'predictions_loss_{tm}_LSTM.npy', np.squeeze(predictions))
