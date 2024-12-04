@@ -4,13 +4,12 @@ import numpy as np
 import tensorflow as tf
 from data_generator import input_fn
 
-import sys
-
-sys.path.append('../../')
-from jitter_model import RouteNet_Fermi
+# from jitter_model import RouteNet_Fermi
+# from jitter_model_LSTM import RouteNet_Fermi
+from jitter_model_RNN import RouteNet_Fermi
 
 for tm in ['constant_bitrate', 'onoff', 'autocorrelated', 'modulated', 'all_multiplexed']:
-    TEST_PATH = f'../../data/traffic_models/{tm}/test'
+    TEST_PATH = f'/home/verma198/Public/RouteNet-Fermi/data/traffic_models/{tm}/test'
 
     optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
 
@@ -25,7 +24,7 @@ for tm in ['constant_bitrate', 'onoff', 'autocorrelated', 'modulated', 'all_mult
     best = None
     best_mre = float('inf')
 
-    ckpt_dir = f'./ckpt_dir_mape_{tm}'
+    ckpt_dir = f'./ckpt_dir_mape_{tm}_RNN'
 
     for f in os.listdir(ckpt_dir):
         if os.path.isfile(os.path.join(ckpt_dir, f)):
@@ -48,4 +47,4 @@ for tm in ['constant_bitrate', 'onoff', 'autocorrelated', 'modulated', 'all_mult
 
     predictions = model.predict(ds_test, verbose=1)
 
-    np.save(f'predictions_jitter_{tm}.npy', np.squeeze(np.exp(predictions)))
+    np.save(f'predictions_jitter_{tm}_RNN.npy', np.squeeze(np.exp(predictions)))

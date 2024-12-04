@@ -65,7 +65,7 @@ for tm in ['constant_bitrate', 'onoff', 'autocorrelated', 'modulated', 'all_mult
         save_freq='epoch')
 
     model.fit(ds_train,
-              epochs=150,
+              epochs=25,
               steps_per_epoch=2000,
               validation_data=ds_validation,
               validation_steps=200,
